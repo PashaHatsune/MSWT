@@ -68,14 +68,22 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 ```
----
 
+sudo cp mswt.service /etc/systemd/system
+
+После чего
+```bash
+systemctl daemon-reload
+```
+---
 
 
 ## restart_daemon.sh - для перезапуска сервиса
 содержимое:
 systemctl restart mswt
 И дайте разрешение на запуск
+
+
 chmod +x ~/restart_daemon.sh
 
 
