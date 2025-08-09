@@ -49,7 +49,6 @@ async def main():
                 text="🔽 | <b>The bot is disabled</b>"
             )
 
-
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
