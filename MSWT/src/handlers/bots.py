@@ -1,4 +1,3 @@
-# src/handlers/bots.py
 import os
 import re
 import subprocess
@@ -14,24 +13,14 @@ from config import config
 @bots_roter.message(Command('bots'))
 async def bots(bot: Bot, message: Optional[Message] = None) -> None:
     text = ""
+    autostart_dir = "./sh-module"
 
-    for filename in os.listdir("."):
+    for filename in os.listdir(autostart_dir):
         if re.search(r"-start\.sh$", filename):
+            full_path = os.path.join(autostart_dir, filename)
             try:
                 process = subprocess.Popen(
-                    f"sh {filename}",
-                    stdout=subprocess.PIPE,
-                    shell=True
-                )
-                process.daemon = True
-                text += f"✅ File autostart {filename} started!\n"
-            except Exception:
-                text += f"❌ File autostart {filename} not started!\n"
-
-        elif re.search(r"-start\.bat$", filename):
-            try:
-                process = subprocess.Popen(
-                    filename,
+                    f"sh {full_path}",
                     stdout=subprocess.PIPE,
                     shell=True
                 )
@@ -58,4 +47,3 @@ async def bots(bot: Bot, message: Optional[Message] = None) -> None:
             await bot.send_message(admin_id, final_text)
         except Exception:
             pass
-

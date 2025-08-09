@@ -69,3 +69,18 @@ Restart=always
 WantedBy=multi-user.target
 ```
 ---
+
+
+
+## restart_daemon.sh - для перезапуска сервиса
+содержимое:
+systemctl restart mswt
+И дайте разрешение на запуск
+chmod +x ~/restart_daemon.sh
+
+
+start-server.sh
+python3 bot.py
+sh start-server.sh
+
+
