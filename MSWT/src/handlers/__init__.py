@@ -14,7 +14,7 @@ def load_routers() -> list[Router]:
     for _, module_name_part, _ in info:
         module = importlib.import_module(f"{module_name}.{module_name_part}")
 
-        found_router = False  # флаг для модуля
+        found_router = False
 
         for attr in dir(module):
             obj = getattr(module, attr)

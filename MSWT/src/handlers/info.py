@@ -13,7 +13,7 @@ info = Router()
 @info.message(Command("info"))
 async def disk(message: Message) -> None:
     info = await message.reply(
-        text = "Loading..."
+        text = "🔄 | <b>Loading.</b>"
     )
 
     try:
@@ -25,7 +25,7 @@ async def disk(message: Message) -> None:
         disk = "Unknown"
 
     await info.edit_text(
-        text = "Get RAM and ROM info..."
+        text = "🔄 | <b>Get RAM and ROM info..</b>"
     )
 
     try:
@@ -37,7 +37,7 @@ async def disk(message: Message) -> None:
         ram = "Unknown"
 
     await info.edit_text(
-        text = "Test CPU..."
+        text = "🔄 | <b>Test CPU...</b>"
     )
     try:
         cpuInfo = cpuinfo.get_cpu_info()['brand_raw']
@@ -47,7 +47,7 @@ async def disk(message: Message) -> None:
         cpu = "Unknown"
 
     await info.edit_text(
-        text = "Get OS version..."
+        text = "🔄 | <b>Get OS version....</b>"
     )
     try:
         os = f"{platform.system()} - {platform.release()} ({platform.machine()})"
@@ -55,7 +55,7 @@ async def disk(message: Message) -> None:
         os = "Unknown"
 
     await info.edit_text(
-        text = "Get Battery info..."
+        text = "🔄 | <b>Get Battery info.....</b>"
     )
     try:
         battery = f"{int(psutil.sensors_battery().percent)}%"
@@ -63,12 +63,13 @@ async def disk(message: Message) -> None:
         battery = f"Unknown"
 
     msg = f'''
-Disk: **{disk}**
-CPU: **{cpu}**
-RAM: **{ram}**
-OS: **{os}**
-Battery: **{battery}**
-Version: **{config.version}**
+💽 | <b>Disk [ROOT]:</b> <code>{disk}</code>
+🖥️ | <b>CPU:</b> <code>{cpu}</code>
+🧠 | <b>RAM:</b> <code>{ram}</code>
+🖱️ | <b>OS:</b> <code>{os}</code>
+🔋 | <b>Battery:</b> <code>{battery}</code>
+📦 | <b>Version:</b> <code>{config.version}</code>
+
 '''
     await info.edit_text(
         text = msg

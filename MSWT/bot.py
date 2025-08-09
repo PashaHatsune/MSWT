@@ -1,21 +1,23 @@
 
-import os
-import sys
-from pathlib import Path
-
 import asyncio
 
 from loguru import logger
 from aiogram import Bot, Dispatcher
-from config import config
-
-from aiogram.client.default import DefaultBotProperties
 from aiogram.enums.parse_mode import ParseMode
+from aiogram.client.default import DefaultBotProperties
 
+from config import config
+from src.handlers.bots import bots
 from src.handlers import load_routers
 from src.middlewire.middlewire import PermissionsMiddleware
 
-from src.handlers.bots import bots
+logger.add(
+    "logs.log",
+    rotation="10 MB", 
+    enqueue=True,
+    backtrace=True,
+    diagnose=True
+)
 
 async def main():
     bot = Bot(
@@ -31,20 +33,20 @@ async def main():
     for i in config.owner:
         @dp.startup()
         async def on():
-            logger.info("🔼 | Бот был поднят")
+            logger.info("🔼 | Bot is start")
 
             await bot.send_message(
                 chat_id=i,
-                text="Хэллоу Эвэрiнiан :)"
+                text="🔼 | <b>Bot is start</b>"
             )
             await bots(bot)
 
         @dp.shutdown()
         async def off():
-            logger.info("🔽 | Бот был выключен")
+            logger.info("🔽 | The bot is disabled")
             await bot.send_message(
                 chat_id=i,
-                text="Бай-бай :)"
+                text="🔽 | <b>The bot is disabled</b>"
             )
 
 

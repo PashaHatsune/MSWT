@@ -9,14 +9,11 @@ from config import config
 stop = Router()
 
 @stop.message(Command("stop"))
-async def stop_command(message: Message):
+async def stop_command(message: Message) -> None:
     for admin_id in config.owner:
-        try:
-            await message.bot.send_message(
-                chat_id=admin_id,
-                text=f"{message.from_user.id} restarting server..."
-            )
-        except Exception:
-            pass
+        await message.bot.send_message(
+            chat_id=admin_id,
+            text=f"🔄 | <b>{message.from_user.id} restarting server...</b>"
+        )
 
     os.system("sudo reboot")

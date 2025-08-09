@@ -25,12 +25,12 @@ async def bots(bot: Bot, message: Optional[Message] = None) -> None:
                     shell=True
                 )
                 process.daemon = True
-                text += f"✅ File autostart {filename} started!\n"
+                text += f"<b>✅ | File autostart {filename} started!</b>\n"
             except Exception:
-                text += f"❌ File autostart {filename} not started!\n"
+                text += f"<b>❌ | File autostart {filename} not started!</b>\n"
 
     if not text:
-        text = "File autostart not found..."
+        text = "😢 | <b>File autostart not found...</b>"
 
     if message:
         try:
@@ -40,7 +40,7 @@ async def bots(bot: Bot, message: Optional[Message] = None) -> None:
     else:
         usernames = "ROOT"
 
-    final_text = f"{usernames} trying to run autostart tasks\n{text}"
+    final_text = f"🤔 | <b>{usernames} trying to run autostart tasks\n{text}</b>"
 
     for admin_id in config.owner:
         try:

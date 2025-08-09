@@ -9,7 +9,7 @@ start = Router()
 @start.message(Command(*["start", "help"]))
 async def help_menu(message: Message) -> None:
     msg = f'''
-AdminPanel by PashaHatsune.t.me  — fork by A9FM
+AdminPanel by PashaHatsune.t.me — fork by A9FM
 Version: {config.version}
 ==========
 1. RAM/CPU/ROM → /info
