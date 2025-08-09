@@ -51,29 +51,27 @@ uv run bot.py
 
 ## ⚙ Пример .service
 
-Чтобы бот запускался автоматически при каждой загрузке системы, создайте `.service`-файл и поместите его в `/etc/systemd/system`:
+Чтобы бот запускался автоматически при каждой загрузке системы, создайте `.service`-файл`:
 
 ```ini
 # MSWT | Копировать в /etc/systemd/system/mswt.service
-[Unit]
-Description=Telegram bot
-After=network.target
-
 [Service]
-ExecStart=/usr/bin/bash /home/__YourDirectory__/start-server.sh
-# В start-server.sh: cd /путь/к/проекту && uv run bot.py
+ExecStart=/<PATH_TO_MSWT>/start-server.sh
 RestartSec=10
 Restart=always
+Type=simple
 
 [Install]
 WantedBy=multi-user.target
 ```
 
-sudo cp mswt.service /etc/systemd/system
 
-После чего
+
+После чего выполните эти три шага
 ```bash
-systemctl daemon-reload
+1. sudo cp mswt.service /etc/systemd/system
+2. systemctl daemon-reload
+3. sudo systemctl enable mswt.service --now
 ```
 ---
 
@@ -84,11 +82,7 @@ systemctl restart mswt
 И дайте разрешение на запуск
 
 
-chmod +x ~/restart_daemon.sh
-
-
-start-server.sh
-python3 bot.py
-sh start-server.sh
+chmod +x /<PATH_TO_MSWT>/restart-daemon.sh
+chmod +x /<PATH_TO_MSWT>/start-server.sh
 
 

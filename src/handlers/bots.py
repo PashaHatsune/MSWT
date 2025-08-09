@@ -15,6 +15,16 @@ async def bots(bot: Bot, message: Optional[Message] = None) -> None:
     text = ""
     autostart_dir = "./sh-module"
 
+    if not os.path.exists(autostart_dir):
+        try:
+            os.makedirs(autostart_dir, exist_ok=True)
+            text += f"<b>📁 | Directory '{autostart_dir}' was created.</b>\n"
+        except Exception as e:
+            text += f"<b>❌ | Failed to create directory '{autostart_dir}': {e}</b>\n"
+            if message:
+                await message.answer(text)
+            return
+
     for filename in os.listdir(autostart_dir):
         if re.search(r"-start\.sh$", filename):
             full_path = os.path.join(autostart_dir, filename)
@@ -29,7 +39,7 @@ async def bots(bot: Bot, message: Optional[Message] = None) -> None:
             except Exception:
                 text += f"<b>❌ | File autostart {filename} not started!</b>\n"
 
-    if not text:
+    if not text.strip():
         text = "😢 | <b>File autostart not found...</b>"
 
     if message:
