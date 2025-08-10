@@ -20,6 +20,5 @@ Version: {config.version}
 ==========
 '''
     await message.reply(
-        chat_id=message.chat.id,
         text=msg
     )
