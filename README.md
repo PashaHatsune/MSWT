@@ -43,7 +43,7 @@ source .venv/bin/activate
 ## ▶ Запуск бота
 
 ```bash
-uv run bot.py
+uv run -m MSWT
 ```
 ---
 
