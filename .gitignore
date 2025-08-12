@@ -4,3 +4,5 @@ __pycache__
 uv.lock
 logs.log
 mswt.service
+backupmongo.py
+checker.py

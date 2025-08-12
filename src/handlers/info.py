@@ -1,12 +1,12 @@
-import psutil
 import platform
 
 import cpuinfo
+import psutil
 from aiogram import Router
-from aiogram.types import Message
 from aiogram.filters.command import Command
+from aiogram.types import Message
 
-from config import config
+from ...config import config
 
 info = Router()
 

@@ -1,15 +1,15 @@
 
 import asyncio
 
-from loguru import logger
 from aiogram import Bot, Dispatcher
-from aiogram.enums.parse_mode import ParseMode
 from aiogram.client.default import DefaultBotProperties
+from aiogram.enums.parse_mode import ParseMode
+from loguru import logger
 
-from config import config
-from src.handlers.bots import bots
-from src.handlers import load_routers
-from src.middlewire.middlewire import PermissionsMiddleware
+from .config import config
+from .src.handlers import load_routers, start_background_tasks
+from .src.handlers.bots import bots
+from .src.middlewire.middlewire import PermissionsMiddleware
 
 logger.add(
     "logs.log",
@@ -49,8 +49,10 @@ async def main():
                 text="🔽 | <b>The bot is disabled</b>"
             )
 
+
+    asyncio.create_task(start_background_tasks(bot))
+
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
 
-asyncio.run(main())

@@ -2,13 +2,15 @@ import os
 import re
 import subprocess
 from typing import Optional
-from aiogram import Router, Bot
-from aiogram.types import Message
+
+from aiogram import Bot, Router
 from aiogram.filters.command import Command
+from aiogram.types import Message
 
 bots_roter = Router()
 
-from config import config
+from ...config import config
+
 
 @bots_roter.message(Command('bots'))
 async def bots(bot: Bot, message: Optional[Message] = None) -> None:

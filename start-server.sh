@@ -12,7 +12,8 @@ fi
 
 cd "$PROJECT_DIR" || exit 1
 
-
-uv run bot.py
-sh start-server.sh
-
+while true; do
+    uv run bot.py
+    echo "Бот упал с кодом $? - перезапускаю через 5 секунд..."
+    sleep 5
+done

@@ -1,10 +1,10 @@
 import os
 
 from aiogram import Router
-from aiogram.types import Message
 from aiogram.filters import Command
+from aiogram.types import Message
 
-from config import config
+from ...config import config
 
 stop = Router()
 

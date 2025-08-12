@@ -4,8 +4,8 @@ import subprocess
 from time import perf_counter
 
 from aiogram import Router
-from aiogram.types import Message
 from aiogram.filters import Command
+from aiogram.types import Message
 
 sh = Router()
 

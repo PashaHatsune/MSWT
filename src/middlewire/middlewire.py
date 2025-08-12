@@ -1,11 +1,12 @@
-from typing import Any, Callable, Dict, Awaitable
+from typing import Any, Awaitable, Callable, Dict
 
-from loguru import logger
 from aiogram import BaseMiddleware
-from aiogram.types import TelegramObject
 from aiogram.enums.chat_type import ChatType
+from aiogram.types import TelegramObject
+from loguru import logger
 
-from config import config
+from ...config import config
+
 
 class PermissionsMiddleware(BaseMiddleware):
     async def __call__(
