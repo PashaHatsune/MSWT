@@ -10,8 +10,8 @@ from ..services import UserService
 
 router = Router(name=__name__)
 
-@inject
 @router.message(Command("stop"))
+@inject
 async def stop_command(
     message: Message,
     user_service: UserService = Provide[

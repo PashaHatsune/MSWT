@@ -8,8 +8,8 @@ from ..services import UserService
 
 router = Router(name=__name__)
 
-@inject
 @router.message(Command(*["start", "help"]))
+@inject
 async def help_menu(
     message: Message,
     user_service: UserService = Provide[

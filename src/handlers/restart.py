@@ -10,8 +10,8 @@ from ..services import UserService
 
 restart = Router()
 
-@inject
 @restart.message(Command("restart"))
+@inject
 async def restart_command(
     message: Message,
     user_service: UserService = Provide[

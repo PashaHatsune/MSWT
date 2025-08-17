@@ -5,68 +5,64 @@ from time import perf_counter
 
 from aiogram import Router
 from aiogram.filters import Command
-from aiogram.types import Message
+from aiogram.types import FSInputFile, Message
 
 router = Router(name=__name__)
 
+
 @router.message(Command("sh"))
-async def sh_command(
-    message: Message
-) -> None:
-    if message.reply_to_message:
-        cmd_text = message.reply_to_message.text
-    else:
-        parts = message.text.split(maxsplit=1)
-        if len(parts) < 2:
-            await message.reply(
-                text="<b>🤷‍♀️ | Specify the command in message text or in reply</b>"
+async def sh_command(message: Message) -> None:
+    cmd_text = (message.reply_to_message.text if message.reply_to_message
+                else (message.text.split(maxsplit=1)[1] if len(message.text.split(maxsplit=1)) > 1 else None))
+    if not cmd_text:
+        await message.reply("<b>🤷‍♀️ | Specify command text, reply, or file path</b>")
+        return
+
+    file_path = os.path.expanduser(cmd_text)
+    # Если это существующий файл — отправляем его
+    if os.path.isfile(file_path):
+        await message.reply_document(
+            FSInputFile(
+                path=file_path
             )
-            return
-        cmd_text = parts[1]
+        )
+        return
 
-    status_msg = await message.reply(
-        text="🏃‍♀️ | <b>Running...</b>"
-    )
+    status_msg = await message.reply("🏃‍♀️ | <b>Running...</b>")
 
-    cmd_obj = subprocess.Popen(
+    proc = subprocess.Popen(
         cmd_text,
         shell=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True
     )
-
-    text = f"$ <code>{cmd_text}</code>\n\n"
+    start_time = perf_counter()
     try:
-        start_time = perf_counter()
-        stdout, stderr = cmd_obj.communicate(timeout=60)
+        stdout, stderr = proc.communicate(timeout=60)
     except subprocess.TimeoutExpired:
-        text += "<b>🤔 | Timeout expired (60 seconds)</b>"
         stdout = stderr = ""
+        text = "<b>🤔 | Timeout expired (60 seconds)</b>"
     else:
-        stop_time = perf_counter()
-        if stdout:
-            text += f"<b>✅ | Output:</b>\n<code>{stdout}</code>\n"
-        if stderr:
-            text += f"<b>❌ | Error:</b>\n<code>{stderr}</code>\n"
-
-        elapsed_ms = round((stop_time - start_time) * 1000, 3)
-        text += f"<b>🔼 | Completed in {elapsed_ms} milliseconds with code {cmd_obj.returncode}</b>"
+        elapsed_ms = round((perf_counter() - start_time) * 1000, 3)
+        text = f"$ <code>{cmd_text}</code>\n\n"
+        if stdout: text += f"<b>✅ | Output:</b>\n<code>{stdout}</code>\n"
+        if stderr: text += f"<b>❌ | Error:</b>\n<code>{stderr}</code>\n"
+        text += f"<b>🔼 | Completed in {elapsed_ms} ms with code {proc.returncode}</b>"
 
     try:
         await status_msg.edit_text(text)
     except Exception:
-        output = f"{stdout}\n\n{stderr}"
-        filename = f"result_{random.randint(1, 9999)}.txt"
-
-        with open(filename, "w") as file:
-            file.write(output)
-
+        filename = f"result_{random.randint(1,9999)}.txt"
+        with open(filename, "w", encoding="utf-8") as f:
+            f.write(f"{stdout}\n{stderr}")
         await message.reply_document(
-            document=open(filename, "rb"),
+            FSInputFile(
+                path=filename,
+                filename='log.txt'
+            ),
             caption=f"<code>{cmd_text}</code>"
         )
-
         os.remove(filename)
 
-    cmd_obj.kill()
+    proc.kill()

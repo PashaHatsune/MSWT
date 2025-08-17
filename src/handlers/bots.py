@@ -13,8 +13,8 @@ from ..services import UserService
 
 router = Router(name=__name__)
 
-@inject
 @router.message(Command('bots'))
+@inject
 async def bots(
     bot: Bot,
     message: Optional[Message] = None,
