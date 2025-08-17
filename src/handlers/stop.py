@@ -3,10 +3,10 @@ import os
 from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
+from dependency_injector.wiring import Provide, inject
 
-from dependency_injector.wiring import inject, Provide
-from ..services import UserService
 from ..container import Container
+from ..services import UserService
 
 router = Router(name=__name__)
 

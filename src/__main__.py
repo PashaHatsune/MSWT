@@ -5,11 +5,10 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums.parse_mode import ParseMode
 from loguru import logger
 
+from .container import Container
 from .handlers import load_routers, start_background_tasks
 from .handlers.bots import bots
 from .middlewire.middlewire import PermissionsMiddleware
-from .container import Container
-
 from .settings import config
 
 logger.add(

@@ -5,11 +5,10 @@ import psutil
 from aiogram import Router
 from aiogram.filters.command import Command
 from aiogram.types import Message
-from dependency_injector.wiring import inject, Provide
-from ..services import UserService
+from dependency_injector.wiring import Provide, inject
+
 from ..container import Container
-
-
+from ..services import UserService
 
 router = Router(name=__name__)
 
