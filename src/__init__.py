@@ -1,6 +1,6 @@
 
 import asyncio
 
-from .bot import main
+from .__main__ import main
 
 asyncio.run(main())

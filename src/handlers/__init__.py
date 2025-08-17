@@ -35,7 +35,6 @@ def load_routers() -> list[Router]:
 async def start_background_tasks(bot):
     modules_path = Path(__file__).parent / "tasks"
     module_base = f"{__name__}.tasks"
-    print(module_base)
 
     for _, module_name_part, _ in pkgutil.iter_modules(path=[str(modules_path)]):
         full_module_name = f"{module_base}.{module_name_part}"

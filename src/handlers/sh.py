@@ -7,10 +7,14 @@ from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
-sh = Router()
 
-@sh.message(Command("sh"))
-async def sh_command(message: Message) -> None:
+
+router = Router(name=__name__)
+
+@router.message(Command("sh"))
+async def sh_command(
+    message: Message
+) -> None:
     if message.reply_to_message:
         cmd_text = message.reply_to_message.text
     else:

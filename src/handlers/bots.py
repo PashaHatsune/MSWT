@@ -6,14 +6,22 @@ from typing import Optional
 from aiogram import Bot, Router
 from aiogram.filters.command import Command
 from aiogram.types import Message
+from dependency_injector.wiring import inject, Provide
+from ..services import UserService
+from ..container import Container
 
-bots_roter = Router()
 
-from ...config import config
+router = Router(name=__name__)
 
-
-@bots_roter.message(Command('bots'))
-async def bots(bot: Bot, message: Optional[Message] = None) -> None:
+@inject
+@router.message(Command('bots'))
+async def bots(
+    bot: Bot,
+    message: Optional[Message] = None,
+    user_service: UserService = Provide[
+        Container.user_service
+    ]
+) -> None:
     text = ""
     autostart_dir = "./sh-module"
 
@@ -54,7 +62,7 @@ async def bots(bot: Bot, message: Optional[Message] = None) -> None:
 
     final_text = f"🤔 | <b>{usernames} trying to run autostart tasks\n{text}</b>"
 
-    for admin_id in config.owner:
+    for admin_id in user_service.config.telegram.owners:
         try:
             await bot.send_message(admin_id, final_text)
         except Exception:

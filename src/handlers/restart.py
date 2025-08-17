@@ -4,13 +4,23 @@ from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from ...config import config
+
+from dependency_injector.wiring import inject, Provide
+from ..services import UserService
+from ..container import Container
+
 
 restart = Router()
 
+@inject
 @restart.message(Command("restart"))
-async def restart_command(message: Message) -> None:
-    for admin_id in config.owner:
+async def restart_command(
+    message: Message,
+    user_service: UserService = Provide[
+        Container.user_service
+    ]
+) -> None:
+    for admin_id in user_service.config.telegram.owners:
         try:
             await message.bot.send_message(
                 chat_id=admin_id,

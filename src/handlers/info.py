@@ -5,13 +5,22 @@ import psutil
 from aiogram import Router
 from aiogram.filters.command import Command
 from aiogram.types import Message
+from dependency_injector.wiring import inject, Provide
+from ..services import UserService
+from ..container import Container
 
-from ...config import config
 
-info = Router()
 
-@info.message(Command("info"))
-async def disk(message: Message) -> None:
+router = Router(name=__name__)
+
+@inject
+@router.message(Command("info"))
+async def system_info(
+    message: Message,
+    user_service: UserService = Provide[
+        Container.user_service
+    ]
+) -> None:
     info = await message.reply(
         text = "🔄 | <b>Loading.</b>"
     )
@@ -68,7 +77,7 @@ async def disk(message: Message) -> None:
 🧠 | <b>RAM:</b> <code>{ram}</code>
 🖱️ | <b>OS:</b> <code>{os}</code>
 🔋 | <b>Battery:</b> <code>{battery}</code>
-📦 | <b>Version:</b> <code>{config.version}</code>
+📦 | <b>Version:</b> <code>{user_service.config.meta.version}</code>
 
 '''
     await info.edit_text(
