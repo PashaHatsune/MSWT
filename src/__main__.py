@@ -20,9 +20,19 @@ logger.add(
 )
 
 async def main():
+
+    
     bot = Bot(
         token=config.telegram.token.get_secret_value(),
         default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+    )
+
+    container = Container(bot=bot)
+    container.wire(
+        modules=[__name__], packages=[
+            '.handlers',
+            '.handlers.tasks'
+            ]
     )
 
     dp = Dispatcher()
@@ -52,14 +62,7 @@ async def main():
             )
 
 
-    container = Container(bot=bot)
-    container.wire(
-        modules=[__name__], packages=[
-            '.handlers',
-            '.handlers.tasks'
-            ]
-    )
-    asyncio.create_task(start_background_tasks(bot))
 
+    asyncio.create_task(start_background_tasks(bot))
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
