@@ -7,3 +7,5 @@ mswt.service
 backupmongo.py
 checker.py
 good_servers.json
+tasks/
+sh-module/
