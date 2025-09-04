@@ -1,7 +1,7 @@
 from pathlib import Path
-from typing import List
+from typing import List, Any
 
-from pydantic import Field, SecretStr
+from pydantic import Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing_extensions import Self
 
@@ -21,6 +21,12 @@ class TelegramSettings(BaseConfig):
 
     token: SecretStr
     owners: List[int]
+
+    @field_validator("owners", mode="before")
+    def parse_owners(cls, v: Any):
+        if isinstance(v, str):
+            return [int(x.strip()) for x in v.split(",")]
+        return v
 
 
 class Metadata(BaseConfig):
