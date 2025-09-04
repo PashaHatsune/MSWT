@@ -19,12 +19,9 @@ async def restart_command(
     ]
 ) -> None:
     for admin_id in user_service.config.telegram.owners:
-        try:
-            await message.bot.send_message(
-                chat_id=admin_id,
-                text=f"""🤔 | {message.from_user.id} send command to server (restart with "restart_daemon.sh" script)"""
-            )
-        except Exception:
-            pass
-
+        await message.bot.send_message(
+            chat_id=admin_id,
+            text=f"""🤔 | {message.from_user.id} send command to server (restart with "restart_daemon.sh" script)"""
+        )
+        
     os.system("sh restart-daemon.sh")

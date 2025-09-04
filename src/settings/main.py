@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Any
+from typing import Any, List
 
 from pydantic import Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
