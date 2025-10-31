@@ -1,1 +1,1 @@
-sudo systemctl restart mswt
+systemctl restart --user mswt

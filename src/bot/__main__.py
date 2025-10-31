@@ -9,7 +9,7 @@ from .container import Container
 from .handlers import load_routers, start_background_tasks
 from .handlers.bots import bots
 from .middlewire.middlewire import PermissionsMiddleware
-from .settings import config
+from ..settings import config
 
 logger.add(
     "logs.log",

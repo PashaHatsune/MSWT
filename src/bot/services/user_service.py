@@ -1,4 +1,4 @@
-from ..settings import Config
+from ...settings import Config
 
 
 class UserService():

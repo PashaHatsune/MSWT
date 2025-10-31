@@ -2,7 +2,7 @@ from aiogram import Bot
 from dependency_injector import containers, providers
 
 from .services import UserService
-from .settings import config
+from ..settings import config
 
 
 class Container(containers.DeclarativeContainer):
