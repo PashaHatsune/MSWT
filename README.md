@@ -48,7 +48,7 @@ source .venv/bin/activate
 ## ▶ Запуск бота
 
 ```bash
-uv run -m MSWT
+uv run -m src.bot
 ```
 ---
 
@@ -105,7 +105,7 @@ echo 'Привет, мир!'
 ### Пример для запуска telegram-бота:
 ```bash
 #!/bin/bash
-cd /home/miku/dev/MSWT || exit 1
+cd /home/miku/dev/MSWT
 source .venv/bin/activate
 uv run bot.py
 ```
@@ -114,7 +114,7 @@ uv run bot.py
 
 Для того, чтобы бот запускался автоматически при старте системы, создайте systemd unit-файл.
 
-### Пример `mswt.service`:
+### Пример `mswt.service` (в пространстве пользователя):
 
 ```ini
 [Service]
@@ -124,7 +124,7 @@ Restart=always
 Type=simple
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
 ```
 
 ### Важные шаги:
@@ -139,19 +139,40 @@ chmod +x /ПУТЬ_К_MSWT/start-server.sh
 2. Скопируйте unit-файл в systemd:
 
 ```bash
-sudo cp mswt.service /etc/systemd/system
+sudo cp mswt.service /home/user/.config/systemd/user/
 ```
 
 3. Перезагрузите конфигурацию systemd:
 
 ```bash
-sudo systemctl daemon-reload
+sudo systemctl --user daemon-reload
 ```
 
 4. Включите и сразу запустите сервис:
 
 ```bash
-sudo systemctl enable mswt.service --now
+sudo systemctl --user enable mswt.service --now
 ```
+
+### Как пользоваться /sh:
+/sh <выполняемая команда>, на пример:
+
+
+```bash
+/sh sudo pacman -Syu
+
+❌ | Error:
+[sudo] пароль для user: 
+sudo: пароль не предоставлен
+sudo: требуется указать пароль
+
+🔼 | Completed in 2464.19 ms with code 1
+```
+## Как выполнить команду от sudo? 
+Для безопасности, вам лучше писать так:
+```bash
+echo "my_password" | sudo -S pacman -Syu
+```
+После чего, программа будет корректно выполняться. Вы можете добавить себя в группу рута, или создать отдельного пользователя, и выполнять команды оттуда - как вам угодно.
 
 ---
