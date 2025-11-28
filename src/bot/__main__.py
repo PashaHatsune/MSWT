@@ -8,6 +8,7 @@ from loguru import logger
 from .container import Container
 from .handlers import load_routers, start_background_tasks
 from .handlers.bots import bots
+from .handlers.sh_utils import clear_logs_dir
 from .middlewire.middlewire import PermissionsMiddleware
 from ..settings import config
 
@@ -36,6 +37,7 @@ async def main():
     )
 
     dp = Dispatcher()
+    clear_logs_dir()
     
     dp.message.middleware(PermissionsMiddleware())
 
