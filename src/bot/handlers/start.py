@@ -24,8 +24,11 @@ Version: {user_service.config.meta.version}
 1. RAM/CPU/ROM → /info
 2. Bash Terminal → /sh (command)
 3. Start Bots → /bots
-4. Restart systemctl → /restart
-5. Restart server (**WARNING**) → /stop
+4. Start sh module → /startsh (file.sh)
+5. Stop sh module → /stopsh (file.sh)
+6. Show sh logs → /logs (file.sh)
+7. Restart systemctl → /restart
+8. Restart server (**WARNING**) → /stop
 ==========
 '''
     await message.reply(
