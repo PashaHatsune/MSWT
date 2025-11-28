@@ -1,6 +1,5 @@
 import os
 import re
-import subprocess
 from typing import Optional
 
 from aiogram import Bot, Router
@@ -10,6 +9,7 @@ from dependency_injector.wiring import Provide, inject
 
 from ..container import Container
 from ..services import UserService
+from .sh_utils import resolve_script_path, start_script_with_logs
 
 router = Router(name=__name__)
 
@@ -37,17 +37,12 @@ async def bots(
 
     for filename in os.listdir(autostart_dir):
         if re.search(r"-start\.sh$", filename):
-            full_path = os.path.join(autostart_dir, filename)
+            full_path = resolve_script_path(filename)
             try:
-                process = subprocess.Popen(
-                    f"sh {full_path}",
-                    stdout=subprocess.PIPE,
-                    shell=True
-                )
-                process.daemon = True
-                text += f"<b>✅ | File autostart {filename} started!</b>\n"
-            except Exception:
-                text += f"<b>❌ | File autostart {filename} not started!</b>\n"
+                pid, log_path = start_script_with_logs(full_path)
+                text += f"<b>✅ | File autostart {filename} started! PID {pid}, log {log_path.name}</b>\n"
+            except Exception as exc:
+                text += f"<b>❌ | File autostart {filename} not started! ({exc})</b>\n"
 
     if not text.strip():
         text = "😢 | <b>File autostart not found...</b>"
