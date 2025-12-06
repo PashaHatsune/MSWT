@@ -11,7 +11,7 @@ from .handlers.bots import bots
 from .handlers.sh_utils import clear_logs_dir
 from .middlewire.middlewire import PermissionsMiddleware
 from ..settings import config
-
+from aiogram.exceptions import TelegramBadRequest
 logger.add(
     "logs.log",
     rotation="10 MB",
@@ -64,10 +64,13 @@ async def main():
         @dp.startup()
         async def on_startup(owner_id=owner_id):
             logger.info("🔼 | Bot is start")
-            await bot.send_message(
-                chat_id=owner_id,
-                text="🔼 | <b>Bot is start</b>"
-            )
+            try:
+                await bot.send_message(
+                    chat_id=owner_id,
+                    text="🔼 | <b>Bot is start</b>"
+                )
+            except TelegramBadRequest as e:
+                logger.error(f"Не удалось написать {owner_id}")
             await bots(bot)
 
         @dp.shutdown()
