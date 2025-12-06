@@ -28,7 +28,22 @@ async def main():
         default=DefaultBotProperties(parse_mode=ParseMode.HTML)
     )
 
+    import os
+    # === создаём handlers/task/ и __init__.py ===
+    task_dir = os.path.join(
+        os.path.dirname(__file__),  # путь к src/bot
+        "handlers/tasks",
+    )
+
+    os.makedirs(task_dir, exist_ok=True)
+
+    init_file = os.path.join(task_dir, "__init__.py")
+    if not os.path.exists(init_file):
+        with open(init_file, "w") as f:
+            f.write("")
+
     container = Container(bot=bot)
+    
     container.wire(
         modules=[__name__], packages=[
             '.handlers',
